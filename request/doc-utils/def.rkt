@@ -1,14 +1,17 @@
 #lang racket
 
 (provide defrequester
-         defpredicate)
+         defpredicate
+         defstructinfo)
 
 (require scribble/manual
          "../private/struct.rkt")
 
 
-(define-syntax-rule (defrequester requester-id pre-flow ...)
-  (defthing requester-id requester? pre-flow ...))
+(define-syntax-rule (define-defthing-syntax id contract)
+  (define-syntax-rule (id thing-id pre-flow (... ...))
+    (defthing thing-id contract pre-flow (... ...))))
 
-(define-syntax-rule (defpredicate predicate-id pre-flow ...)
-  (defthing predicate-id predicate/c pre-flow ...))
+(define-defthing-syntax defrequester requester?)
+(define-defthing-syntax defpredicate predicate/c)
+(define-defthing-syntax defstructinfo struct-info?)

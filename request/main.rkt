@@ -3,7 +3,8 @@
 
 (require
   "private/base.rkt"
-  "private/struct.rkt")
+  "private/struct.rkt"
+  "private/call-response.rkt")
 
 
 (provide
@@ -15,4 +16,5 @@
   requester-put
   requester-post
   requester-delete
-  struct:requester))
+  struct:requester)
+ (struct-out response))
