@@ -18,3 +18,11 @@
     "rackunit-lib"
     "racket-doc"
     "doc-coverage"))
+
+
+(define test-omit-paths
+  '("info.rkt"
+    "request/main.scrbl"
+    "request/doc-utils"
+    "request/private/base.scrbl"
+    "request/private/struct.scrbl"))
