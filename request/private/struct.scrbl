@@ -74,3 +74,24 @@
   the given @racket[requester] and returns a response from
   the @racket[requester].
 }
+
+@defproc[(post [requester requester?]
+               [location any/c]
+               [body any/c]
+               [#:headers headers list? '()])
+         any/c]{
+  Performs a POST request for the resource at @racket[location]
+  with the supplied @racket[body] and @racket[headers] using
+  the given @racket[requester] and returns a response from
+  the @racket[requester].
+}
+
+@defproc[(delete [requester requester?]
+                 [location any/c]
+                 [body any/c]
+                 [#:headers headers list? '()])
+         any/c]{
+  Performs a DELETE request for the resource at @racket[location]
+  with the supplied @racket[headers] using the given @racket[requester]
+  and returns a response from the @racket[requester].
+}
