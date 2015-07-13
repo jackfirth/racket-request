@@ -17,4 +17,4 @@
   requester-post
   requester-delete
   struct:requester)
- (struct-out response))
+ (struct-out http-response))

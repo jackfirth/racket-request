@@ -4,18 +4,18 @@
          typed/net/head
          fancy-app)
 
-(provide (struct-out response)
-         Response
+(provide (struct-out http-response)
+         HttpResponse
          Url
          call-response/input-url)
 
 
-(struct response
+(struct http-response
   ([code : Positive-Integer]
    [headers : (HashTable String String)]
    [body : String]) #:transparent)
 
-(define-type Response response)
+(define-type HttpResponse http-response)
 (define-type Url url)
 
 (: not-newline? (-> Char Boolean))
@@ -41,7 +41,7 @@
   (define code-chars (takef dropped-protocol not-whitespace?))
   (cast (string->number (apply string code-chars)) Positive-Integer))
 
-(: impure-port->response (-> Input-Port Response))
+(: impure-port->response (-> Input-Port HttpResponse))
 (define (impure-port->response impure-port)
   (define HTTP-header+MIME-headers (purify-port impure-port))
   (define-values (HTTP-header MIME-headers)
@@ -49,9 +49,9 @@
   (define status-code (http-header-code HTTP-header))
   (define headers (cast (make-hash (extract-all-fields MIME-headers)) (HashTable String String)))
   (define raw-body (port->string impure-port))
-  (response status-code headers raw-body))
+  (http-response status-code headers raw-body))
 
 
-(: call-response/input-url (-> Url (-> Url Input-Port) Response))
+(: call-response/input-url (-> Url (-> Url Input-Port) HttpResponse))
 (define (call-response/input-url url connect)
   (call/input-url url connect impure-port->response))
