@@ -6,8 +6,6 @@
 
 @title{HTTP Requests and Requester}
 
-@defmodule[request]
-
 @defrequester[http-requester]{
   A simple requester for the HTTP protocol built with
   @racket[get-impure-port], @racket[put-impure-port],
