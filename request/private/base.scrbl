@@ -2,7 +2,8 @@
 
 @(require "../doc-utils/examples.rkt"
           "../doc-utils/def.rkt"
-          (for-label request))
+          (for-label request
+                     racket))
 
 @title{HTTP Requests and Requester}
 

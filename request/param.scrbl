@@ -4,6 +4,7 @@
           "doc-utils/def.rkt"
           "private/base.rkt"
           (for-label (except-in request get put post delete)
+                     racket
                      request/param))
 
 @title{Parameterized Requests}
