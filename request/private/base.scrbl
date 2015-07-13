@@ -29,21 +29,3 @@
   responses while this struct is used when
   @italic{receiving} them.
 }
-
-@defpredicate[http-response?]{
- Predicate satisfied by @racket[http-response]s.
-}
-@defstructinfo[struct:http-response]{
- Struct info instance for @racket[http-response]s.
-}
-
-@deftogether[(
-  @defproc[(http-response-code [http-response http-response?])
-           exact-positive-integer?]
-  @defproc[(http-response-headers [http-response http-response?])
-           (hash/c string? string?
-                   #:immutable? #t)]
-  @defproc[(http-response-body [http-response http-response?])
-           string?])]{
-  Field accessors for instances of the @racket[http-response] struct.
-}
