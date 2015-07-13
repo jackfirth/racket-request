@@ -9,6 +9,7 @@
 
 (define deps
   '("base"
+    "fancy-app"
     "rackunit-lib"))
 
 
