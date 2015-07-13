@@ -26,7 +26,6 @@
       Should be @italic{idempotent} - doing a PUT twice at
       the same location with the same body should be exactly
       the same as doing it once. Additionally, for a location
-      that can be PUT to a GET response should contain what
       that can be PUT to, a GET response should contain what
       was last PUT there.
     }
@@ -48,4 +47,13 @@
   Provided the four provided procedures behave according to the
   specifications outlined above, the constructed @racket[requester]
   defines a REST-ful interface.
+}
+
+@defproc[(get [requester requester?]
+              [location any/c]
+              [#:headers headers list? '()])
+         any/c]{
+  Performs a GET request for the resource at @racket[location]
+  with the supplied @racket[headers] using the given @racket[requester]
+  and returns a response.
 }
