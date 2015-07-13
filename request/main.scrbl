@@ -20,3 +20,5 @@ types of requests.
 @author[@author+email["Jack Firth" "jackhfirth@gmail.com"]]
 
 source code: @url["https://github.com/jackfirth/racket-request"]
+
+@include-section["private/struct.scrbl"]
