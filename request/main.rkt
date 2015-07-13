@@ -7,6 +7,12 @@
 
 
 (provide
- (all-from-out
-  "private/base.rkt"
-  "private/struct.rkt"))
+ (except-out
+  (all-from-out
+   "private/base.rkt"
+   "private/struct.rkt")
+  requester-get
+  requester-put
+  requester-post
+  requester-delete
+  struct:requester))

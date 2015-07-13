@@ -1,15 +1,17 @@
 #lang scribble/manual
 
-@(require "../doc-utils/examples.rkt")
+@(require "../doc-utils/examples.rkt"
+          racket/contract)
 
 @title{Requesters}
 
-@defstruct*[requester ([get (->* (any/c) (#:headers list?) any/c)]
-                       [put (->* (any/c any/c) (#:headers list?) any/c)]
-                       [post (->* (any/c any/c) (#:headers list?) any/c)]
-                       [delete (->* (any/c) (#:headers list?) any/c)])]{
-  A structure type for requesters. A requester is defined on
-  a @italic{location} type, a @italic{body} type, a @italic{header}
+@defproc[(requester [get (->* (any/c) (#:headers list?) any/c)]
+                    [put (->* (any/c any/c) (#:headers list?) any/c)]
+                    [post (->* (any/c any/c) (#:headers list?) any/c)]
+                    [delete (->* (any/c) (#:headers list?) any/c)])
+         requester?]{
+  Constructs a requester. A requester is defined on a
+  @italic{location} type, a @italic{body} type, a @italic{header}
   type, and a @italic{response} type. A requester is composed
   of four procedures, each of which may take an optional list of
   headers to modify the request or add additional information.
@@ -47,6 +49,10 @@
   Provided the four provided procedures behave according to the
   specifications outlined above, the constructed @racket[requester]
   defines a REST-ful interface.
+}
+
+@defthing[(requester? predicate/c)]{
+  Predicate identifying requesters
 }
 
 @defproc[(get [requester requester?]
