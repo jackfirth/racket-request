@@ -61,5 +61,16 @@
          any/c]{
   Performs a GET request for the resource at @racket[location]
   with the supplied @racket[headers] using the given @racket[requester]
-  and returns a response.
+  and returns a response from the @racket[requester].
+}
+
+@defproc[(put [requester requester?]
+              [location any/c]
+              [body any/c]
+              [#:headers headers list? '()])
+         any/c]{
+  Performs a PUT request for the resource at @racket[location]
+  with the supplied @racket[body] and @racket[headers] using
+  the given @racket[requester] and returns a response from
+  the @racket[requester].
 }
