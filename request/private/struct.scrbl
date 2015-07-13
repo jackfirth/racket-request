@@ -1,6 +1,7 @@
 #lang scribble/manual
 
 @(require "../doc-utils/examples.rkt"
+          "../doc-utils/def.rkt"
           racket/contract)
 
 @title{Requesters}
@@ -51,7 +52,7 @@
   defines a REST-ful interface.
 }
 
-@defthing[(requester? predicate/c)]{
+@defpredicate[requester?]{
   Predicate identifying requesters
 }
 
@@ -95,3 +96,4 @@
   with the supplied @racket[headers] using the given @racket[requester]
   and returns a response from the @racket[requester].
 }
+
