@@ -23,3 +23,4 @@ source code: @url["https://github.com/jackfirth/racket-request"]
 
 @include-section["private/struct.scrbl"]
 @include-section["private/base.scrbl"]
+@include-section["param.scrbl"]

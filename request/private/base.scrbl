@@ -1,7 +1,8 @@
 #lang scribble/manual
 
 @(require "../doc-utils/examples.rkt"
-          "../doc-utils/def.rkt")
+          "../doc-utils/def.rkt"
+          (for-label request))
 
 @title{HTTP Requests and Requester}
 
