@@ -27,6 +27,7 @@
       the same location with the same body should be exactly
       the same as doing it once. Additionally, for a location
       that can be PUT to a GET response should contain what
+      that can be PUT to, a GET response should contain what
       was last PUT there.
     }
     @item{
