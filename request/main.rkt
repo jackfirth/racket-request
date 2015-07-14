@@ -4,14 +4,16 @@
 (require
   "private/base.rkt"
   "private/struct.rkt"
-  "private/call-response.rkt")
+  "private/call-response.rkt"
+  "private/wrap.rkt")
 
 
 (provide
  (except-out
   (all-from-out
    "private/base.rkt"
-   "private/struct.rkt")
+   "private/struct.rkt"
+   "private/wrap.rkt")
   requester-get
   requester-put
   requester-post
