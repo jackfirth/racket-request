@@ -4,6 +4,7 @@
 (require
   "private/base.rkt"
   "private/struct.rkt"
+  "private/exn.rkt"
   "private/call-response.rkt"
   "private/wrap.rkt")
 
@@ -13,6 +14,7 @@
   (all-from-out
    "private/base.rkt"
    "private/struct.rkt"
+   "private/exn.rkt"
    "private/wrap.rkt")
   requester-get
   requester-put
