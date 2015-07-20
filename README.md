@@ -4,4 +4,6 @@
 
 Package for simplifying HTTP requests and writing integration tests of REST-ful APIs in Racket
 
+`raco pkg install request` `(require request)`
+
 Currently unstable and not guaranteed to maintain backwards compatibility
