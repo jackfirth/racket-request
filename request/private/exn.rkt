@@ -2,11 +2,13 @@
 
 (require fancy-app
          "struct.rkt"
+         "base.rkt"
          "wrap.rkt"
          "call-response.rkt")
 
 (provide (struct-out exn:fail:network:http:code)
          requester-http-exn
+         http-requester/exn
          http-exn-of-code?)
 
 
@@ -57,3 +59,4 @@
   (http-response-body handler-response))
 
 (define requester-http-exn (wrap-requester-response parse-response _))
+(define http-requester/exn (requester-http-exn http-requester))

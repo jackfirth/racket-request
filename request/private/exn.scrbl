@@ -24,6 +24,12 @@
   is thrown which contains the code and response body.
 }
 
+@defrequester[http-requester/exn]{
+  Like @racket[http-requester], but throws exceptions for failure codes
+  and returns the http response body as it's response. Equivalent to
+  @racket[(requester-http-exn http-requester)].
+}
+
 @defproc[(http-exn-of-code? [code exact-positive-integer?]
                             [v any/c])
          boolean?]{
