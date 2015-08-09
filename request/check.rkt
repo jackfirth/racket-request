@@ -3,7 +3,8 @@
 (require "param.rkt"
          rackunit)
 
-(provide check-get
+(provide (all-from-out "param.rkt")
+         check-get
          check-get-exn
          check-get-not-exn
          check-put

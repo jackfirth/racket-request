@@ -15,7 +15,8 @@ requests using the @racket[current-requester] from
 HTTP API integration testing framework. Note that none of
 these checks accept headers. Use @racket[with-requester]
 and @racket[add-requester-headers] to add headers to the
-current requester for a set of checks.
+current requester for a set of checks. This module also
+re-provides everything in @racket[request/param].
 
 @(define-syntax-rule (defvoidproc id+formals pre-flow ...)
    (defproc id+formals void? pre-flow ...))
