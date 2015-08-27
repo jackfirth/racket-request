@@ -18,7 +18,8 @@
 
 
 (define build-deps
-  '("cover"
+  '("net-doc"
+    "cover"
     "rackunit-lib"
     "rackunit-doc"
     "racket-doc"
