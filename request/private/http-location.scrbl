@@ -24,10 +24,11 @@ relative paths as locations.
   @racket[domain] to construct a full http @racket[url],
   which is then passed to the underlying @racket[requester].
   The relative path should not begin with a slash.
-  @racketinput[
+  @racketblock[
     (define foo-com-requester
       (make-domain-requester "foo.com" http-requester))
-    (get foo-com-requester "some/sort/of/path") ;; request to http://foo.com/some/sort/of/path
+    (code:comment @#,elem{request to http://foo.com/some/sort/of/path})                                                    
+    (get foo-com-requester "some/sort/of/path")
 ]}
 
 @defproc[(make-host+port-requester [host string?]
@@ -39,3 +40,15 @@ relative paths as locations.
   @racket[(make-host+port-requester "foo.com" 8080 some-requester)]
   is equivalent to @racket[(make-domain-requester "foo.com:8080" some-requester)]
 }
+
+@defproc[(make-https-requester [requester requester?])
+         requester?]{
+ Given a requester that accepts @racket[url?]s
+ as locations, returns a requester that accepts a @racket[url] and converts
+ it to use an https scheme before being passed to the underlying @racket[requester].
+ @racketblock[
+   (define foo-https-requester
+     (make-domain-requester "foo.com" (make-https-requester http-requester)))
+ (code:comment @#,elem{request to https://foo.com/some/sort/of/path})                                                    
+ (get foo-https-requester "some/sort/of/path")
+ ]}
