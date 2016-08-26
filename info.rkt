@@ -1,11 +1,8 @@
 #lang info
 
-
 (define collection 'multi)
 
-
 (define version "0.1")
-
 
 (define deps
   '("base"
@@ -15,15 +12,11 @@
     "typed-racket-lib"
     "typed-racket-more"))
 
-
 (define build-deps
   '("net-doc"
-    "cover"
     "rackunit-lib"
     "rackunit-doc"
-    "racket-doc"
-    "doc-coverage"))
-
+    "racket-doc"))
 
 (define test-omit-paths
   '("info.rkt"
