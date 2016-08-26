@@ -12,46 +12,50 @@
   [make-host+port-requester
    (-> string? exact-nonnegative-integer? requester? requester?)]
   [make-https-requester
-   (-> string? requester? requester?)]))
+   (-> requester? requester?)]))
 
 
-(define (domain+relative-path->http-url protocol domain relative-path)
-  (string->url (format "~a://~a/~a" protocol domain relative-path)))
+(define (domain+relative-path->http-url domain relative-path)
+  (string->url (format "http://~a/~a" domain relative-path)))
 
 (define (host+port->domain host port)
   (format "~a:~a" host port))
 
+(define (http-url->https-url location)
+  (struct-copy url location [scheme "https"]))
+
 (define (make-domain-requester domain requester)
   (wrap-requester-location
-   (domain+relative-path->http-url "http" domain _) requester))
+   (domain+relative-path->http-url domain _) requester))
 
-(define (make-https-requester domain requester)
-  (wrap-requester-location
-   (domain+relative-path->http-url "https" domain _) requester))
+(define (make-https-requester requester)
+ (wrap-requester-location
+  (http-url->https-url _) requester))
 
 (define (make-host+port-requester host port requester)
   (make-domain-requester (host+port->domain host port) requester))
 
-(module+ test
-  (require rackunit
+(module+ integration-test
+  (require json
+           rackunit
            "base.rkt"
            "call-response.rkt")
 
   (define domain "httpbin.org")
-  (define http-url (domain+relative-path->http-url "http" domain "/"))
-  (define https-url (domain+relative-path->http-url "https" domain "/"))
-
+  (define http-url (domain+relative-path->http-url domain "/"))
   (define http-req (make-domain-requester domain http-requester))
-  (define https-req
-    (make-https-requester domain http-requester))
+  (define https-req (make-domain-requester
+                     domain (make-https-requester http-requester)))
  
-  (define http-resp (get http-req "/ip"))
-  (define https-resp (get https-req "/ip"))
-  
+  (define http-resp (get http-req "/get"))
+  (define https-resp (get https-req "/get"))
+
   (check-pred url? http-url)
-  (check-equal? "http" (url-scheme http-url))
-  (check-equal? "https" (url-scheme https-url))
+  (check-equal? (url-scheme http-url) "http")
+  (check-equal?
+   (hash-ref (string->jsexpr (http-response-body https-resp)) 'url)
+   "https://httpbin.org/get")
   
   (check-pred requester? http-req)
-  (check-equal? 200 (http-response-code http-resp))
-  (check-equal? 200 (http-response-code https-resp)))
+  (check-equal? (http-response-code http-resp) 200)
+  (check-equal? (http-response-code https-resp) 200))

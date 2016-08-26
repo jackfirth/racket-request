@@ -24,5 +24,6 @@ install:
 
 script:
   - raco test -c request
+  - raco test --submodule integration-test request
   - raco doc-coverage request
   - if [ -n "$RUN_COVER" ]; then raco cover -f coveralls -d $TRAVIS_BUILD_DIR/coverage -c request; fi
