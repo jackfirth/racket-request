@@ -12,52 +12,42 @@
 (define json-headers
   '("Accept: application/json" "Content-Type: application/json"))
 
-(define (merge-headers headers)
+(define (merge-json-headers headers)
   (flatten (cons json-headers headers)))
 
-(define (http-get url #:headers [headers '()])
-  (call-response/input-url url (get-impure-port _ headers)))
+(define (get call-response-fn url #:headers [headers '()])
+  (call-response-fn url (get-impure-port _ headers)))
 
-(define (http-put url body #:headers [headers '()])
-  (call-response/input-url url (put-impure-port _ body headers)))
+(define (put call-response-fn url body #:headers [headers '()])
+  (call-response-fn url (put-impure-port _ body headers)))
 
-(define (http-post url body #:headers [headers '()])
-  (call-response/input-url url (post-impure-port _ body headers)))
+(define (post call-response-fn url body #:headers [headers '()])
+  (call-response-fn url (post-impure-port _ body headers)))
 
-(define (http-delete url #:headers [headers '()])
-  (call-response/input-url url (delete-impure-port _ headers)))
+(define (delete call-response-fn url #:headers [headers '()])
+  (call-response-fn url (delete-impure-port _ headers)))
 
-(define (http-json-get url #:headers [headers '()])
-  (call-response/input-json-url url (get-impure-port _ headers)))
-
-(define (http-json-put url body #:headers [headers '()])
-  (call-response/input-json-url url (put-impure-port _ body headers)))
-
-(define (http-json-post url body #:headers [headers '()])
-  (call-response/input-json-url url (post-impure-port _ body headers)))
-
-(define (http-json-delete url #:headers [headers '()])
-  (call-response/input-json-url url (delete-impure-port _ headers)))
-
-(define (wrap-json-headers method-fn)
+(define (wrap-http-method method-fn)
   (λ (url #:headers [headers '()] . rest)
-    (define json-headers (merge-headers headers))
-    (apply method-fn url #:headers json-headers rest)))
+    (apply method-fn call-response/input-url url #:headers headers rest)))
+
+(define (wrap-json-method method-fn)
+  (λ (url #:headers [headers '()] . rest)
+    (apply method-fn call-response/input-json-url url #:headers
+           (merge-json-headers headers) rest)))
 
 (define (wrap-json-body method-fn)
   (λ (url body #:headers [headers '()] . rest)
-    (define json-headers (merge-headers headers))
-    (define json-body (jsexpr->bytes body))
-    (apply method-fn url json-body #:headers json-headers rest)))
+    (apply method-fn url (jsexpr->bytes body) #:headers headers rest)))
 
 (define http-requester
-  (requester http-get
-             http-put
-             http-post
-             http-delete))
+  (requester (wrap-http-method get)
+             (wrap-http-method put)
+             (wrap-http-method post)
+             (wrap-http-method delete)))
 
 (define json-requester
-  (requester (wrap-json-headers http-json-get)
-             (wrap-json-body http-json-put)
-             (wrap-json-body http-json-post)
-             (wrap-json-headers http-json-delete)))
+  (requester (wrap-json-method get)
+             (wrap-json-body (wrap-json-method put))
+             (wrap-json-body (wrap-json-method post))
+             (wrap-json-method delete)))
