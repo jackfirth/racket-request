@@ -6,6 +6,7 @@
          typed/json)
 
 (provide (struct-out http-response)
+         (struct-out json-response)
          HttpResponse
          Url
          call-response/input-url
