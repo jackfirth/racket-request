@@ -2,6 +2,7 @@
 
 (require net/url
          fancy-app
+         "json.rkt"
          "struct.rkt"
          "wrap.rkt")
 
@@ -50,13 +51,6 @@
   (check-pred requester? http-req)
   (check-pred requester? https-req)
   
-  (define http-json-req (make-domain-requester domain json-requester))
-  (define https-json-req (make-domain-requester
-                          domain (make-https-requester json-requester)))
-  
-  (check-pred requester? http-json-req)
-  (check-pred requester? https-json-req)
-  
   (define http-resp (get http-req "/get"))
   (define https-resp (get https-req "/get"))
   
@@ -67,49 +61,4 @@
    "https://httpbin.org/get")
   
   (check-equal? (http-response-code http-resp) 200)
-  (check-equal? (http-response-code https-resp) 200)
-  
-  (define http-json-get-resp
-    (get http-json-req "/get"
-         #:headers
-         '("Content-Type: application/json; charset=utf8"
-           "x-racket: yes")))
-  
-  (define http-json-post-resp
-    (post http-json-req "/post" (hasheq 'grand "larceny")))
-  (define https-json-get-resp (get https-json-req "/get"))
-  
-  (check-pred jsexpr? (json-response-body http-json-get-resp))
-  (check-pred jsexpr? (json-response-body https-json-get-resp))
-  
-  ; exception thrown for non-jsexpr body
-  (check-exn
-   exn:fail?
-   (λ ()
-     (post http-json-req "/post" 'felony)))
-  
-  (check-equal? (hash-ref
-                 (hash-ref
-                  (json-response-body http-json-get-resp)
-                  'headers)
-                 'Content-Type)
-                "application/json; charset=utf8")
-  
-  (check-equal? (hash-ref
-                 (hash-ref
-                  (json-response-body http-json-get-resp)
-                  'headers)
-                 'Accept)
-                "application/json")
-  
-  (check-equal? (hash-ref
-                 (hash-ref
-                  (json-response-body http-json-get-resp)
-                  'headers)
-                 'X-Racket)
-                "yes")
-  
-  (check-equal? (hash-ref
-                 (json-response-body http-json-post-resp)
-                 'data)
-                "{\"grand\":\"larceny\"}"))
+  (check-equal? (http-response-code https-resp) 200))
