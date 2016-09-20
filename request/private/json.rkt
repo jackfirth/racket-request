@@ -38,7 +38,7 @@
     (add-requester-headers
      json-headers http-requester/exn))))
 
-(module+ test
+(module+ integraton-test
   (require net/url
            rackunit)
 
