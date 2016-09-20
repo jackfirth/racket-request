@@ -31,28 +31,13 @@
 }
 
 @defrequester[json-requester]{
-  A simple requester for the HTTP protocol specifically for JSON requests
-  built with @racket[get-impure-port], @racket[put-impure-port],
-  @racket[post-impure-port], and @racket[delete-impure-port].
-  Locations are @racket[url?]s, headers are @racket[string?]s
-  as in the impure port functions, bodies are @racket[jsexpr?],
-  and responses are instances of the @racket[json-response] struct.
-  Two headers are automatically injected into the request:
-  "Content-Type: application/json" and "Accept: application/json".
-  The body of the request is automatically converted from a @racket[jsexpr?]
-  to a JSON string.
-}
-
-@defstruct*[json-response ([code exact-positive-integer?]
-                           [headers (hash/c string? string?
-                                            #:immutable? #t)]
-                           [body jsexpr?])]{
-  A structure type for HTTP JSON responses. Contains a status
-  code, a hash of headers, and a body @racket[jsexpr?].
-  @racket[json-requester] responds with instances of
-  this structure type. This is distinct from the
-  @racket[response] structure type in the web server
-  package, as that response is for @italic{sending}
-  responses while this struct is used when
-  @italic{receiving} them.
+  Wraps @racket[http-requester] and modifies the request to
+  include two headers: "Content-Type: application/json" and
+  "Accept: application/json". The body of the request is automatically converted
+  from a @racket[jsexpr?] to a JSON string. Locations are @racket[url?]s,
+  headers are @racket[string?]s as in the impure port functions, bodies are
+  @racket[jsexpr?], and responses are instances of the
+  @racket[json-response] struct. If the response comes back with non-JSON or it
+  cannot otherwise be parsed correctly into a @racket[jsexpr?] it will throw
+  @racket[exn:fail:json?]
 }

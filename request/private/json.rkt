@@ -6,8 +6,16 @@
          "struct.rkt"
          "wrap.rkt")
 
+(provide (struct-out exn:fail:json)
+         json-requester)
+
+(struct exn:fail:json exn () #:transparent)
+
 (define json-headers
   '("Accept: application/json" "Content-Type: application/json"))
+
+(define (make-json-exn handler-response)
+  (exn:fail:json (~a handler-response) (current-continuation-marks)))
 
 (define (wrap-json-body body)
   (if (jsexpr? body)
@@ -15,7 +23,12 @@
       body))
 
 (define (handle-json-response response)
-  (string->jsexpr response))
+  (define json-resp 
+    (with-handlers ([exn:fail:read? (λ (e) #f)])
+      (string->jsexpr response)))
+  (if (not json-resp)
+      (raise (make-json-exn response))
+      json-resp))
 
 (define json-requester
   (wrap-requester-response
@@ -25,7 +38,7 @@
     (add-requester-headers
      json-headers http-requester/exn))))
 
-(module+ integration-test
+(module+ test
   (require net/url
            rackunit)
 
@@ -47,6 +60,7 @@
 
   (define get-200 ((requester-get json-requester)
                    (make-url "get") #:headers '("x-men: colossus")))
+    
   (check-pred jsexpr? get-200)
   (check-equal? (hash-ref (get-headers get-200) 'Content-Type)
                "application/json")
@@ -66,6 +80,11 @@
   (define delete-200 (json-delete (make-url "delete")))
   (check-pred jsexpr? delete-200)
 
+  ;; get HTML which should throw exn:fail:json
+  (check-exn
+   exn:fail:json?
+   (λ () ((requester-get json-requester) (make-url "html"))))
+    
   ;; httpbin returns a non-JSON body for 418 Teapot
   (check-exn
    exn:fail:network:http:code?
