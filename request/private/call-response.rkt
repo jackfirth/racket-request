@@ -2,8 +2,7 @@
 
 (require typed/net/url
          typed/net/head
-         fancy-app
-         typed/json)
+         fancy-app)
 
 (provide (struct-out http-response)
          HttpResponse
