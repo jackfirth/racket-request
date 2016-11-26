@@ -36,8 +36,7 @@
   "Accept: application/json". The body of the request is automatically converted
   from a @racket[jsexpr?] to a JSON string. Locations are @racket[url?]s,
   headers are @racket[string?]s as in the impure port functions, bodies are
-  @racket[jsexpr?], and responses are instances of the
-  @racket[json-response] struct. If the response comes back with non-JSON or it
-  cannot otherwise be parsed correctly into a @racket[jsexpr?] it will throw
-  @racket[exn:fail:json?]
+  @racket[jsexpr?], and responses are instances of the @racket[json-response]
+  struct. If the response comes back with non-JSON or it cannot otherwise be
+  parsed correctly into a @racket[jsexpr?] it will throw @racket[exn:fail:json?]
 }
