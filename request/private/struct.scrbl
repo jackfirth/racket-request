@@ -90,7 +90,6 @@
 
 @defproc[(delete [requester requester?]
                  [location any/c]
-                 [body any/c]
                  [#:headers headers list? '()])
          any/c]{
   Performs a DELETE request for the resource at @racket[location]
