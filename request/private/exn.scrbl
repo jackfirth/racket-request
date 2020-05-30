@@ -15,6 +15,13 @@
   wrapped by @racket[requester-http-exn].
 }
 
+@defstruct*[(exn:fail:json exn:fail)
+            ([response string?])]{
+  This exception is thrown by @racket[json-requester]s
+  when they cannot parse the response as valid JSON. The original response
+  is returned as a string in the body of the exception.
+}
+
 @defproc[(requester-http-exn [requester requester?])
          requester?]{
   Given a @racket[requester] whose responses are @racket[http-response]s,

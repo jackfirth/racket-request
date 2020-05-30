@@ -7,7 +7,6 @@
 
 (provide http-requester)
 
-
 (define (http-get url #:headers [headers '()])
   (call-response/input-url url (get-impure-port _ headers)))
 
