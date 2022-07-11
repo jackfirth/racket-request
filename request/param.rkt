@@ -17,14 +17,14 @@
 (define-syntax-rule (with-requester requester body ...)
   (parameterize ([current-requester requester]) body ...))
 
-(define (param-get location)
-  (get (current-requester) location))
+(define (param-get location #:headers [headers '()])
+  (get (current-requester) location #:headers headers))
 
-(define (param-put location body)
-  (put (current-requester) location body))
+(define (param-put location body #:headers [headers '()])
+  (put (current-requester) location body #:headers headers))
 
-(define (param-post location body)
-  (post (current-requester) location body))
+(define (param-post location body #:headers [headers '()])
+  (post (current-requester) location body #:headers headers))
 
-(define (param-delete location)
-  (delete (current-requester) location))
+(define (param-delete location #:headers [headers '()])
+  (delete (current-requester) location #:headers headers))
