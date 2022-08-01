@@ -7,6 +7,7 @@
 (provide (struct-out http-response)
          HttpResponse
          Url
+         current-decode-locale
          call-response/input-url)
 
 
@@ -41,6 +42,9 @@
   (define code-chars (takef dropped-protocol not-whitespace?))
   (cast (string->number (apply string code-chars)) Positive-Integer))
 
+(: current-decode-locale (Parameterof String))
+(define current-decode-locale (make-parameter ""))
+
 (: impure-port->response (-> Input-Port HttpResponse))
 (define (impure-port->response impure-port)
   (define HTTP-header+MIME-headers (purify-port impure-port))
@@ -48,7 +52,14 @@
     (split-combined-header HTTP-header+MIME-headers))
   (define status-code (http-header-code HTTP-header))
   (define headers (cast (make-hash (extract-all-fields MIME-headers)) (HashTable String String)))
-  (define raw-body (port->string impure-port))
+  (define bs (port->bytes impure-port))
+  (define converter (bytes-open-converter (current-decode-locale) (locale-string-encoding)))
+  (define raw-body
+    (if (bytes-converter? converter)
+        (let-values ([(r _len _status) (bytes-convert converter bs)])
+          (parameterize ([current-locale (locale-string-encoding)])
+            (bytes->string/locale r)))
+        (port->string impure-port)))
   (http-response status-code headers raw-body))
 
 

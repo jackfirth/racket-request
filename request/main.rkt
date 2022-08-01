@@ -23,4 +23,5 @@
   requester-post
   requester-delete
   struct:requester)
- (struct-out http-response))
+ (struct-out http-response)
+ current-decode-locale)
