@@ -14,7 +14,7 @@
 (struct http-response
   ([code : Positive-Integer]
    [headers : (HashTable String String)]
-   [body : String]) #:transparent)
+   [body : Bytes]) #:transparent)
 
 (define-type HttpResponse http-response)
 (define-type Url url)
@@ -52,14 +52,7 @@
     (split-combined-header HTTP-header+MIME-headers))
   (define status-code (http-header-code HTTP-header))
   (define headers (cast (make-hash (extract-all-fields MIME-headers)) (HashTable String String)))
-  (define bs (port->bytes impure-port))
-  (define converter (bytes-open-converter (current-decode-locale) (locale-string-encoding)))
-  (define raw-body
-    (if (bytes-converter? converter)
-        (let-values ([(r _len _status) (bytes-convert converter bs)])
-          (parameterize ([current-locale (locale-string-encoding)])
-            (bytes->string/locale r)))
-        (port->string impure-port)))
+  (define raw-body (port->bytes impure-port))
   (http-response status-code headers raw-body))
 
 

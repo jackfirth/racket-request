@@ -25,8 +25,3 @@
              http-put
              http-post
              http-delete))
-
-; TODO: write usage into document, ask for help about where shuold it be
-#;(parameterize ([current-decode-locale "CP950"])
-    (http-post (string->url "https://xxx.com/yyy/zzz")
-               #""))
