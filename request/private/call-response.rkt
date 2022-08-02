@@ -7,7 +7,6 @@
 (provide (struct-out http-response)
          HttpResponse
          Url
-         current-decode-locale
          call-response/input-url)
 
 
@@ -41,9 +40,6 @@
   (define dropped-protocol (rest (dropf chars not-whitespace?)))
   (define code-chars (takef dropped-protocol not-whitespace?))
   (cast (string->number (apply string code-chars)) Positive-Integer))
-
-(: current-decode-locale (Parameterof String))
-(define current-decode-locale (make-parameter ""))
 
 (: impure-port->response (-> Input-Port HttpResponse))
 (define (impure-port->response impure-port)
