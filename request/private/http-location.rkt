@@ -2,6 +2,7 @@
 
 (require net/url
          fancy-app
+         "json.rkt"
          "struct.rkt"
          "wrap.rkt")
 
@@ -29,8 +30,8 @@
    (domain+relative-path->http-url domain _) requester))
 
 (define (make-https-requester requester)
- (wrap-requester-location
-  (http-url->https-url _) requester))
+  (wrap-requester-location
+   (http-url->https-url _) requester))
 
 (define (make-host+port-requester host port requester)
   (make-domain-requester (host+port->domain host port) requester))
@@ -40,22 +41,24 @@
            rackunit
            "base.rkt"
            "call-response.rkt")
-
+  
   (define domain "httpbin.org")
   (define http-url (domain+relative-path->http-url domain "/"))
   (define http-req (make-domain-requester domain http-requester))
   (define https-req (make-domain-requester
                      domain (make-https-requester http-requester)))
- 
+  
+  (check-pred requester? http-req)
+  (check-pred requester? https-req)
+  
   (define http-resp (get http-req "/get"))
   (define https-resp (get https-req "/get"))
-
+  
   (check-pred url? http-url)
   (check-equal? (url-scheme http-url) "http")
   (check-equal?
    (hash-ref (string->jsexpr (http-response-body https-resp)) 'url)
    "https://httpbin.org/get")
   
-  (check-pred requester? http-req)
   (check-equal? (http-response-code http-resp) 200)
   (check-equal? (http-response-code https-resp) 200))

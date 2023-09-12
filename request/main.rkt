@@ -7,7 +7,8 @@
   "private/exn.rkt"
   "private/http-location.rkt"
   "private/call-response.rkt"
-  "private/wrap.rkt")
+  "private/wrap.rkt"
+  "private/json.rkt")
 
 
 (provide
@@ -17,7 +18,8 @@
    "private/struct.rkt"
    "private/exn.rkt"
    "private/http-location.rkt"
-   "private/wrap.rkt")
+   "private/wrap.rkt"
+   "private/json.rkt")
   requester-get
   requester-put
   requester-post

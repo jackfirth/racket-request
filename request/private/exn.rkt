@@ -11,7 +11,6 @@
          http-requester/exn
          http-exn-of-code?)
 
-
 (define message-codes
   (hash 400 "Bad Request"
         401 "Unauthorized"

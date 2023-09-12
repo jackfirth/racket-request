@@ -25,7 +25,6 @@
 (: not-whitespace? (-> Char Boolean))
 (define (not-whitespace? char)
   (not (char-whitespace? char)))
-
 (: split-combined-header (-> String (Values String String)))
 (define (split-combined-header HTTP-header+MIME-headers)
   (define chars (string->list HTTP-header+MIME-headers))
@@ -50,7 +49,6 @@
   (define headers (cast (make-hash (extract-all-fields MIME-headers)) (HashTable String String)))
   (define raw-body (port->string impure-port))
   (http-response status-code headers raw-body))
-
 
 (: call-response/input-url (-> Url (-> Url Input-Port) HttpResponse))
 (define (call-response/input-url url connect)
